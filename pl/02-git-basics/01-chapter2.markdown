@@ -205,7 +205,7 @@ Aby zobaczyć, co zmieniłeś ale nie wysłałeś do poczekalni, wpisz `git diff
 	@@ -36,6 +36,10 @@ def main
 	           @commit.parents[0].parents[0].parents[0]
 	         end
-	
+
 	+        run_code(x, 'commits 1') do
 	+          git.commits.size
 	+        end
@@ -284,7 +284,6 @@ oraz `git diff --cached`, aby zobaczyć zmiany wysłane dotąd do poczekalni:
 ### Zatwierdzanie zmian ###
 
 Teraz, kiedy twoja poczekalnia zawiera dokładnie to, co powinna, możesz zatwierdzić swoje zmiany. Pamiętaj, że wszystko czego nie ma jeszcze w poczekalni — każdy plik, który utworzyłeś lub zmodyfikowałeś, a na którym później nie uruchomiłeś polecenia `git add` — nie zostanie uwzględnione wśród zatwierdzanych zmian. Pozostanie wyłącznie w postaci zmodyfikowanych plików na twoim dysku.
-
 W tym wypadku, kiedy ostatnio uruchamiałeś `git status`, zobaczyłeś, że wszystkie twoje zmiany są już w poczekalni, więc jesteś gotowy do ich zatwierdzenia. Najprostszy sposób zatwierdzenia zmian to wpisanie `git commit`:
 
 	$ git commit
@@ -338,9 +337,9 @@ Zauważ, że w tym wypadku przed zatwierdzeniem zmian i wykonaniem rewizji nie m
 
 ### Usuwanie plików ###
 
-Aby usunąć plik z Gita, należy go najpierw wyrzucić ze zbioru plików śledzonych, a następnie zatwierdzić zmiany. Służy do tego polecenie `git -rm`, które dodatkowo usuwa plik z katalogu roboczego. Nie zobaczysz go już zatem w sekcji plików nieśledzonych przy następnej okazji.
+Aby usunąć plik z Gita, należy najpierw wyrzucić go ze zbioru plików śledzonych (a dokładniej usunąć go z poczekalni), a następnie zatwierdzić zmiany. Polecenie `git -rm` służy właśnie do tego, a dodatkowo usuwa plik z katalogu roboczego, zatem przy kolejnej okazji nie zobaczysz go w sekcji plików nieśledzonych.
 
-Jeżeli po prostu usuniesz plik z katalogu roboczego i uruchomisz komendę `git status` zobaczysz go w sekcji "Zmienione ale nie zaktualizowane" (Changed but not updated) (czyli, poza poczekalnią):
+Jeżeli po prostu usuniesz plik z katalogu roboczego, pokaże się on w części „Changed but not updated” (Zmienione, ale nie zaktualizowane, czyli poza poczekalnią) wyniku polecenia `git status`:
 
 	$ rm grit.gemspec
 	$ git status
@@ -352,7 +351,7 @@ Jeżeli po prostu usuniesz plik z katalogu roboczego i uruchomisz komendę `git 
 	#       deleted:    grit.gemspec
 	#
 
-W dalszej kolejności, uruchomienie `git rm` doda do poczekalni operację usunięcia pliku:
+Jeśli później wydasz polecenie `git rm`, doda ono do poczekalni operację usunięcia pliku:
 
 	$ git rm grit.gemspec
 	rm 'grit.gemspec'
@@ -365,9 +364,9 @@ W dalszej kolejności, uruchomienie `git rm` doda do poczekalni operację usuni�
 	#       deleted:    grit.gemspec
 	#
 
-Przy kolejnej rewizji, plik zniknie i nie będzie dłużej śledzony. Jeśli zmodyfikowałeś go wcześniej i dodałeś już do indeksu oczekujących zmian, musisz wymusić usunięcie opcją `-f`. Spowodowane jest to wymogami bezpieczeństwa, aby uchronić cię przed usunięciem danych, które nie zostały jeszcze zapamiętane w żadnej migawce i które później nie będą mogły być odtworzone z repozytorium Gita.
+Kiedy następnym razem zatwierdzisz zmiany, plik zniknie i nie będzie dłużej śledzony. Jeśli wcześniej zmodyfikowałeś plik i dodałeś go do indeksu oczekujących, musisz wymusić usunięcie opcją `-f`. Jest to forma zabezpieczenia, chroniąca cię przed przypadkowym usunięciem danych, które nie zostały jeszcze zapamiętane w żadnej migawce i których nie da się odzyskać za pomocą Gita.
 
-Kolejną przydatną funkcją jest możliwość zachowywania plików w drzewie roboczym ale usuwania ich z poczekalni. Innymi słowy, możesz chcieć trzymać plik na dysku ale nie chcieć, żeby Git go dalej śledził. Jest to szczególnie przydatne w sytuacji kiedy zapomniałeś dodać czegoś do `.gitignore` i przez przypadek umieściłeś w poczekalni np. duży plik dziennika lub garść plików `.a`. Wystarczy wówczas wywołać polecenie rm wraz opcją `--cached`:
+Kolejną użyteczną funkcją, na której używanie możesz się zdecydować, jest możliwość zachowania pliku w drzewie roboczym pomimo usunięcia go z poczekalni. Innymi słowy, możesz zatrzymać plik na dysku, ale nie chcieć, by Git nadal go śledził. Jest to szczególnie przydatne w sytuacji, gdy zapomniałeś dodać czegoś do `.gitignore` i przez przypadek umieściłeś w poczekalni np. duży plik dziennika lub garść skompilowanych plików `.a`. By to zrobić, posłuż się opcją `--cached`:
 
 	$ git rm --cached readme.txt
 
@@ -438,7 +437,6 @@ Jeśli teraz uruchomisz na sklonowanym repozytorium polecenie `git log`, uzyskas
 	Date:   Sat Mar 15 10:31:28 2008 -0700
 
 	    first commit
-
 
 Domyślnie, polecenie `git log` uruchomione bez argumentów, listuje zmiany zatwierdzone w tym repozytorium w odwrotnej kolejności chronologicznej, czyli pokazując najnowsze zmiany w pierwszej kolejności. Jak widzisz polecenie wyświetliło zmiany wraz z ich sumą kontrolną SHA-1, nazwiskiem oraz e-mailem autora, datą zapisu oraz notką zmiany.
 
